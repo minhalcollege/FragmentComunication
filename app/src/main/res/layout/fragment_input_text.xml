@@ -1,0 +1,15 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffb5"
+    tools:context="tomerbu.edu.fragmentcomunication.InputTextFragment">
+
+    <EditText
+        android:id="@+id/etInput"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:hint="Message..."
+        android:inputType="textPersonName" />
+
+</FrameLayout>
