@@ -14,13 +14,17 @@ import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class ChatFragment extends Fragment {
+    ChatAdapter adapter;
+    RecyclerView rvChat;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -28,9 +32,10 @@ public class ChatFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_chat, container, false);
 
-        RecyclerView rvChat = v.findViewById(R.id.rvChat);
+        rvChat = v.findViewById(R.id.rvChat);
 
-        //TODO: Add the adapter.
+        adapter = new ChatAdapter(getActivity());
+        rvChat.setAdapter(adapter);
 
         rvChat.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -38,7 +43,8 @@ public class ChatFragment extends Fragment {
     }
 
     public void onTextChanged(String text) {
-        Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
+        adapter.add(text);
+
     }
 
 
@@ -48,13 +54,16 @@ public class ChatFragment extends Fragment {
     static class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder>{
         private Context context;
         private LayoutInflater inflater;
-        private ArrayList<String> chatData = new ArrayList<>();
+        private ArrayList<String> chatData = new ArrayList<>();//Arrays.asList(new String[]{"Tomer1", "Tomer2", "Tomer", "Tomer", "Tomer", "Tomer"}));
 
+        public void add(String text) {
+            chatData.add(text);
+            this.notifyItemInserted(chatData.size() - 1);
+        }
         public ChatAdapter(Context context) {
             this.context = context;
             this.inflater = LayoutInflater.from(context);
         }
-
         @Override
         public ChatViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             //problem we have an xml (not a view) -> inflate the xml to a view.
@@ -68,10 +77,13 @@ public class ChatFragment extends Fragment {
             String chatItem = chatData.get(position);
             h.tvChatItem.setText(chatItem);
         }
+
+
         @Override
         public int getItemCount() {
             return chatData.size();
         }
+
         //purpose/Job definition:
         //View Holder - > findViewByID for the chat_item.xml:
         static class ChatViewHolder extends RecyclerView.ViewHolder {
